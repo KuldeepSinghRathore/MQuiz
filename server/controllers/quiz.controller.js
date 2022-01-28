@@ -6,9 +6,8 @@ const getAllQuizzes = catchAsyncHandler(async (req, res) => {
   const quizzes = await Quiz.find()
   res.status(200).json({
     success: true,
-    data: {
-      quizzes,
-    },
+
+    quizzes,
   })
 })
 
@@ -23,9 +22,8 @@ const addNewQuiz = catchAsyncHandler(async (req, res) => {
   await quiz.save()
   res.status(200).json({
     success: true,
-    data: {
-      quiz,
-    },
+
+    quiz,
   })
 })
 
@@ -36,9 +34,8 @@ const getSingleQuiz = catchAsyncHandler(async (req, res, next) => {
   }
   res.status(200).json({
     success: true,
-    data: {
-      quiz,
-    },
+
+    quiz,
   })
 })
 
