@@ -28,7 +28,7 @@ module.exports = (err, req, res, next) => {
     }
     //  Handle JWT Error
     if (err.name === "JsonWebTokenError") {
-      const message = "Invalid Token"
+      const message = "UnAuthorized"
       error = new ErrorHandler(message, 401)
     }
     // Handle Mongoose Duplicate Key Error

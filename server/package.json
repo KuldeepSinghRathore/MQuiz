@@ -17,6 +17,7 @@
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.8",
+    "mongoose-referrence-validator": "^1.0.0",
     "morgan": "^1.10.0",
     "validator": "^13.7.0"
   },

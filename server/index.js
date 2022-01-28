@@ -7,10 +7,12 @@ const cors = require("cors")
 //import routes
 const quizRouter = require("./routes/quiz.route")
 const userRouter = require("./routes/user.route")
+const scoreRouter = require("./routes/score.route")
 const { connectDb } = require("./database/connectDb")
 const { saveQuizToDb } = require("./controllers/quiz.controller")
 const { data } = require("./database/data")
 const errorMiddleware = require("./middlewares/error")
+const verifyAuth = require("./middlewares/verifyAuth")
 
 // handle uncaught exception
 process.on("uncaughtException", (err) => {
@@ -32,6 +34,7 @@ connectDb()
 // routes
 app.use("/api/v1", quizRouter)
 app.use("/api/v1", userRouter)
+app.use("/api/v1", verifyAuth, scoreRouter)
 // error handling middleware
 app.use(errorMiddleware)
 
