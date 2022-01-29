@@ -1,12 +1,20 @@
-import React from "react"
+import { CategoryPage } from "pages/CategoryPage"
+import { Login } from "pages/Login"
+import { QuizPage } from "pages/QuizPage"
+import { SignUp } from "pages/SignUp"
+import { Routes, Route } from "react-router-dom"
 import "./App.css"
 
 function App() {
   return (
-    <div className="App">
-      <div>
-        <h1 className="bg-blue-500">Learning React</h1>
-      </div>
+    <div className="max-w-screen-xl mx-auto   ">
+      <Routes>
+        <Route path="/" element={<CategoryPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/quiz" element={<QuizPage />} />
+      </Routes>
+      {/* <Rule /> */}
     </div>
   )
 }
