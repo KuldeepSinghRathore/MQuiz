@@ -1,5 +1,5 @@
 import React from "react"
-import { Quiz } from "types/quizContext.types"
+import { Quiz } from "types/types"
 
 export const CategoryCard = (category: Quiz) => {
   return (

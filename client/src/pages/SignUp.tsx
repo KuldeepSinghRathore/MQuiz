@@ -1,9 +1,11 @@
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as Yup from "yup"
-
+import axios, { AxiosError } from "axios"
 import React from "react"
-
+import { API } from "API"
+import { ServerErrorMessage } from "types/types"
+import { useNavigate } from "react-router-dom"
 export type UserSubmitForm = {
   username: string
   email: string
@@ -11,7 +13,10 @@ export type UserSubmitForm = {
   confirmPassword: string
 }
 
-export const SignUp: React.FC = () => {
+export const SignUp = () => {
+  const [isError, setError] = React.useState(false)
+  const [errorMessage, setErrorMessage] = React.useState("")
+  const navigate = useNavigate()
   const validationSchema = Yup.object().shape({
     username: Yup.string()
       .required("Username is required")
@@ -35,15 +40,64 @@ export const SignUp: React.FC = () => {
   } = useForm<UserSubmitForm>({
     resolver: yupResolver(validationSchema),
   })
-  const onSubmit = (data: UserSubmitForm) => {
-    console.log(JSON.stringify(data, null, 2))
+
+  //   if (Object.keys(errors).length === 0 && errors.constructor === Object) {
+  //     console.log("No errors found")
+  //   }
+  //   console.log(errors, "Main Error Hun")
+
+  const onSubmit = async (data: UserSubmitForm) => {
+    try {
+      if (Object.keys(errors).length === 0 && errors.constructor === Object) {
+        const { username, email, password } = data
+        const {
+          data: { token, userId, name },
+          status,
+        } = await axios.post(`${API}/signup`, {
+          name: username,
+          email,
+          password,
+        })
+
+        // const userComingFrom = state?.from ? state.from : "/";
+
+        if (status === 200) {
+          localStorage.setItem("token", JSON.stringify(token))
+          localStorage.setItem("userId", JSON.stringify(userId))
+          localStorage.setItem("username", JSON.stringify(name))
+          // setToken(token);
+          // setUserId(userId);
+          navigate("/")
+        }
+      }
+    } catch (error) {
+      setError(true)
+      if (axios.isAxiosError(error)) {
+        const serverError = error as AxiosError<ServerErrorMessage>
+        if (serverError && serverError.response) {
+          console.log({ serverError })
+          let errorMessage = serverError.response.data.message
+          setErrorMessage(errorMessage)
+        }
+      }
+    }
   }
+
   return (
     <div className="bg-black h-screen flex items-center justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-yellow-500 w-fit max-h-[80%] shadow-md rounded px-8 pt-6 pb-8 mb-4"
       >
+        <p className="text-center font-semibold">
+          Member{" "}
+          <span
+            className="font-extrabold cursor-pointer"
+            onClick={() => navigate("/login")}
+          >
+            Login
+          </span>
+        </p>
         <div className="mb-1">
           <label className="block text-gray-700 text-sm font-bold mb-1">
             Username
@@ -95,6 +149,11 @@ export const SignUp: React.FC = () => {
           <div className="text-red-700 font-extrabold text-xs italic">
             {errors.confirmPassword?.message}
           </div>
+          {isError && (
+            <div className="text-red-700 font-extrabold text-xs italic">
+              {errorMessage}
+            </div>
+          )}
         </div>
 
         <div className="flex justify-between mt-3">

@@ -39,3 +39,6 @@ export type CONTEXTTYPE = {
   state: InitialState
   dispatch: (action: ACTIONTYPE) => void
 }
+export type ServerErrorMessage = {
+  message: string
+}

@@ -1,4 +1,4 @@
-import { ACTIONTYPE, InitialState } from "types/quizContext.types"
+import { ACTIONTYPE, InitialState } from "types/types"
 
 export const initialState: InitialState = {
   currentCategory: {} as InitialState["currentCategory"],

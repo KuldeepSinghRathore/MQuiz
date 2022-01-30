@@ -1,5 +1,5 @@
 import { useStateContext } from "context/StateProvider"
-import { Options, Questions } from "types/quizContext.types"
+import { Options, Questions } from "types/types"
 
 type QuizCardTypes = {
   questionObj: Questions
@@ -17,7 +17,7 @@ export const QuizCard = ({
   const { question, options } = questionObj
   const { dispatch } = useStateContext()
   return (
-    <div>
+    <div className="mt-3">
       <div>
         <h2 className="bg-black py-3 text-center text-yellow-300 font-bold ">
           <span className="py-3 px-5  ">Topic : {topic}</span>{" "}

@@ -38,6 +38,8 @@ const signupUser = catchAsyncHandler(async (req, res, next) => {
         success: true,
         message: "User Created Successfully",
         token,
+        userId: saveNewUser._id,
+        name: saveNewUser.name,
       })
     }
   })
@@ -73,12 +75,11 @@ const loginUser = catchAsyncHandler(async (req, res, next) => {
   return res.status(200).json({
     success: true,
     message: "Login Successful",
-    userData: {
-      userId: userFromDb.id,
-      name: userFromDb.name,
-      email: userFromDb.email,
-      token,
-    },
+
+    userId: userFromDb.id,
+    name: userFromDb.name,
+    email: userFromDb.email,
+    token,
   })
 })
 module.exports = { signupUser, loginUser }

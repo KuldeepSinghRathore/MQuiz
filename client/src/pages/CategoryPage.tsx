@@ -8,7 +8,7 @@ export const CategoryPage = () => {
   const [showModal, setShowModal] = React.useState<boolean>(false)
   //   const navigate = useNavigate()
   return (
-    <div className="bg-black min-w-full  flex item min-h-screen md:px-10 items-center">
+    <div className="bg-black min-w-full  flex item min-h-screen md:px-5 items-center">
       {showModal && <Modal closeModal={setShowModal} />}
       <div className="flex gap-8 items-center justify-center h-full w-full p-5 flex-wrap">
         {state?.quizData?.map((category) => {

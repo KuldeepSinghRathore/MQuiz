@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from "react"
-import { CONTEXTTYPE } from "types/quizContext.types"
+import { CONTEXTTYPE } from "types/types"
 import axios from "axios"
 import { useEffect } from "react"
 import { API } from "API"
