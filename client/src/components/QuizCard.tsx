@@ -37,7 +37,6 @@ export const QuizCard = ({
               "bg-orange-500 font-bold"
             } text-center `}
             onClick={() =>
-              // console.log(option._id, questionObj._id, 'this is option')
               dispatch({
                 type: "SET_SELECTED_OPTION",
                 payload: { optionId: option._id, questionId: questionObj._id },

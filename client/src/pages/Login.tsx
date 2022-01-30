@@ -29,7 +29,6 @@ export const Login: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     try {
       event.preventDefault()
-      console.log(JSON.stringify(formValue, null, 2))
 
       if (formValue.email.length > 0 && formValue.password.length > 0) {
         const {

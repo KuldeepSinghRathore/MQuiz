@@ -37,7 +37,7 @@ export type QuizIdType = {
 
 export type ScoreType = {
   _id?: string
-  userId: string
+  userId: string | null
   quizId: QuizIdType
   score: number
   name: string | null

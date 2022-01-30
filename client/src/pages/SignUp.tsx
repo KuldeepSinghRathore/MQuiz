@@ -43,11 +43,6 @@ export const SignUp = () => {
     resolver: yupResolver(validationSchema),
   })
 
-  //   if (Object.keys(errors).length === 0 && errors.constructor === Object) {
-  //     console.log("No errors found")
-  //   }
-  //   console.log(errors, "Main Error Hun")
-
   const onSubmit = async (data: UserSubmitForm) => {
     try {
       if (Object.keys(errors).length === 0 && errors.constructor === Object) {

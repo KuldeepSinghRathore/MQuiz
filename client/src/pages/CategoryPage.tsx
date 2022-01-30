@@ -1,17 +1,12 @@
 import { CategoryCard } from "components/CategoryCard"
 import { Modal } from "components/Modal"
-import { useAuthContext } from "context/AuthProvider"
 import { useStateContext } from "context/StateProvider"
 import React from "react"
 
 export const CategoryPage = () => {
   const { state, dispatch } = useStateContext()
-  const { token } = useAuthContext()
-
-  console.log(token, "I am token in category page")
 
   const [showModal, setShowModal] = React.useState<boolean>(false)
-  //   const navigate = useNavigate()
 
   return (
     <div className="bg-black min-w-full  flex item min-h-screen md:px-5 items-center">

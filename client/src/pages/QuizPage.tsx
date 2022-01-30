@@ -6,7 +6,7 @@ import { useStateContext } from "../context/StateProvider"
 
 export const QuizPage = () => {
   const { state, setScore } = useStateContext()
-  const [timeCounter, setTimeCounter] = useState(300)
+  const [timeCounter, setTimeCounter] = useState(60)
   const [index, setIndex] = useState(0)
   const navigate = useNavigate()
   const calculateScore = (questionArr: Questions[]) => {
@@ -23,19 +23,21 @@ export const QuizPage = () => {
     }, 0)
     return score
   }
-  //   const path = useLocation().pathname
-  //   useEffect(() => {
-  //     if (timeCounter > 0 && path === "/quiz") {
-  //       setTimeout(() => {
-  //         console.log(timeCounter)
-  //         setTimeCounter(timeCounter - 1)
-  //       }, 1000)
-  //     }
-  //     if (timeCounter === 0) {
-  // setScore(calculateScore(state?.currentCategory?.questions))
-  //       navigate("/final")
-  //     }
-  //   }, [timeCounter])
+  let path = useLocation().pathname
+  useEffect(() => {
+    if (timeCounter > 0 && path === "/quiz") {
+      let timer = setTimeout(() => {
+        setTimeCounter(timeCounter - 1)
+      }, 1000)
+      return () => clearTimeout(timer)
+    }
+    if (timeCounter === 0) {
+      setScore(
+        (prev) => (prev = calculateScore(state?.currentCategory?.questions))
+      )
+      navigate("/final")
+    }
+  }, [timeCounter])
 
   const length = state?.currentCategory?.questions?.length
   if (length === 0) {
@@ -46,7 +48,9 @@ export const QuizPage = () => {
       <div>
         {
           <div className="flex flex-col justify-evenly h-screen">
-            {/* 0{(timeCounter / 60).toFixed(2)} */}
+            <span className="text-white font-extrabold">
+              0{(timeCounter / 60).toFixed(2)}
+            </span>
             {/* {(timeCounter % 3600) / 60}
             {timeCounter % 60} */}
             <QuizCard

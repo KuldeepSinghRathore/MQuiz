@@ -12,16 +12,12 @@ export const reducer = (
 ): InitialState => {
   switch (action.type) {
     case "LOAD_DATA":
-      console.log(action.payload)
-
       return {
         ...state,
 
         quizData: action.payload,
       }
     case "LOAD_SCORE":
-      console.log(action.payload)
-
       return {
         ...state,
 
@@ -56,9 +52,6 @@ export const reducer = (
       )
         ? true
         : false
-      console.log(isExist, "isExist")
-
-      console.log(action.payload, "update score")
 
       return {
         ...state,

@@ -1,17 +1,14 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
 const Rules = [
-  ` Select an answer for every question. Unanswered questions will not be considered.`,
-
-  ` Click on the Submit button at the bottom of
-          the page to have your answers graded`,
-  ` you may review your
-          answer-choices and compare them to the correct answers after your
-          final attempt.`,
-  ` Each question has 10 point`,
-  ` If you Do  not Click on Save Scorr,
-          your score will not saved.`,
-  ` 25% Negative Points for Each Wrong Answer ! `,
+  ` You will be given 2 questions.`,
+  ` You will be given 60 seconds to answer all question.`,
+  ` You will be given 10 point for each correct answer.`,
+  ` You will be given -25% point for each wrong answer.`,
+  ` You will be given 0 point for each unanswered question.`,
+  ` Click on the Submit button at the bottom of the page to have your answers graded`,
+  ` you may review your answer-choices and compare them to the correct answers after submission.`,
+  ` If you Do  not Click on Save Score, your score will not saved.`,
 ]
 
 type CloseModalType = {
@@ -38,7 +35,7 @@ export const Modal = ({ closeModal }: CloseModalType) => {
         <div>
           {Rules.map((rule, index) => {
             return (
-              <div className="py-2 font-bold" key={index}>
+              <div className="pt-1 font-bold" key={index}>
                 {index + 1}. {rule}
               </div>
             )

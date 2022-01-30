@@ -19,7 +19,6 @@ export const StateProvider: React.FC = ({ children }) => {
         const { data, status } = await axios.get(url)
 
         if (status === 200) {
-          console.log(data)
           dispatch({ type: "LOAD_DATA", payload: data.quizzes })
         }
       } catch (error) {
@@ -38,7 +37,6 @@ export const StateProvider: React.FC = ({ children }) => {
         })
 
         if (status === 200) {
-          console.log(data, "forscore")
           dispatch({ type: "LOAD_SCORE", payload: data.scores })
         }
       } catch (error) {

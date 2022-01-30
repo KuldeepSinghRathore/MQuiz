@@ -30,7 +30,7 @@ export const ReviewPage = () => {
           dispatch({
             type: "UPDATE_SCORE",
             payload: {
-              userId: state.currentCategory._id,
+              userId,
 
               quizId: {
                 _id: state.currentCategory._id,
