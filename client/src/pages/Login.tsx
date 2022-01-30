@@ -2,6 +2,7 @@ import React from "react"
 import axios, { AxiosError } from "axios"
 import { useNavigate } from "react-router-dom"
 import { API } from "API"
+import { useAuthContext } from "context/AuthProvider"
 export type UserSubmitForm = {
   email: string
   password: string
@@ -11,11 +12,12 @@ export type ServerError = {
 }
 export const Login: React.FC = () => {
   const navigate = useNavigate()
+  const { setToken, setUserName, setUserId } = useAuthContext()
   const [isError, setError] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState("")
   const [formValue, setFormValue] = React.useState<UserSubmitForm>({
-    email: "",
-    password: "",
+    email: "kuldeepsingh@gmail.com",
+    password: "123456",
   })
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,9 +38,9 @@ export const Login: React.FC = () => {
         } = await axios.post(`${API}/login`, formValue)
 
         if (status === 200) {
-          // setFirstName(firstName);
-          // setToken(token);
-          // setUserId(userId);
+          setUserName(name)
+          setToken(token)
+          setUserId(userId)
           localStorage.setItem("userId", JSON.stringify(userId))
           localStorage.setItem("token", JSON.stringify(token))
           localStorage.setItem("username", JSON.stringify(name))
@@ -82,7 +84,7 @@ export const Login: React.FC = () => {
             Email
           </label>
           <input
-            type="text"
+            type="email"
             name="email"
             onChange={handleChange}
             value={formValue.email}
@@ -121,6 +123,12 @@ export const Login: React.FC = () => {
             Reset
           </button>
         </div>
+        {/* <button
+          onClick={handleSubmit}
+          className="bg-black flex justify-center w-full text-yellow-400 hover:text-white font-bold mt-7 py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Guest Login
+        </button> */}
       </form>
     </div>
   )

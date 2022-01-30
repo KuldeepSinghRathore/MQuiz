@@ -9,9 +9,9 @@ const Rules = [
           answer-choices and compare them to the correct answers after your
           final attempt.`,
   ` Each question has 10 point`,
-  ` If you not logged in
+  ` If you Do  not Click on Save Scorr,
           your score will not saved.`,
-  ` 2 Negative Points for Each Wrong Answer ! `,
+  ` 25% Negative Points for Each Wrong Answer ! `,
 ]
 
 type CloseModalType = {

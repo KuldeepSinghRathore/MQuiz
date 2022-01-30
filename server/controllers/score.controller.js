@@ -3,9 +3,11 @@ const { Score } = require("../models/score.model")
 const ErrorHandler = require("../utils/errorHandler")
 
 const saveScore = catchAsyncHandler(async (req, res, next) => {
-  const { userId, quizId, name, score } = req.body
+  const { userId } = req
+  const { quizId, name, score } = req.body
 
   const userWithScore = await Score.findOne({ userId, quizId })
+  console.log(userWithScore, "userWithScore")
   if (!userWithScore) {
     const newScore = new Score({
       userId,
@@ -20,8 +22,13 @@ const saveScore = catchAsyncHandler(async (req, res, next) => {
     })
   }
 
-  userWithScore.score = score
-  await userWithScore.save()
+  const updatedScore = Object.assign(userWithScore, {
+    userId,
+    quizId,
+    name,
+    score,
+  })
+  await updatedScore.save()
   res.status(200).json({
     success: true,
     message: "Score Updated Successfully",
@@ -29,7 +36,7 @@ const saveScore = catchAsyncHandler(async (req, res, next) => {
 })
 
 const getAllScores = catchAsyncHandler(async (req, res, next) => {
-  const scores = await Score.find()
+  const scores = await Score.find().populate("quizId", "topic")
 
   if (scores.length === 0) {
     return next(new ErrorHandler("No scores found play some quiz", 404))

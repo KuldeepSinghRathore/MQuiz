@@ -34,7 +34,7 @@ connectDb()
 // routes
 app.use("/api/v1", quizRouter)
 app.use("/api/v1", userRouter)
-app.use("/api/v1", verifyAuth, scoreRouter)
+app.use("/api/v1", scoreRouter)
 // error handling middleware
 app.use(errorMiddleware)
 

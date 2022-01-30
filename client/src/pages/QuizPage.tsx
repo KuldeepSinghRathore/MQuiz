@@ -1,13 +1,28 @@
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+import { Questions } from "types/types"
 import { QuizCard } from "../components/QuizCard"
 import { useStateContext } from "../context/StateProvider"
 
 export const QuizPage = () => {
-  const { state } = useStateContext()
+  const { state, setScore } = useStateContext()
   const [timeCounter, setTimeCounter] = useState(300)
   const [index, setIndex] = useState(0)
   const navigate = useNavigate()
+  const calculateScore = (questionArr: Questions[]) => {
+    const score = questionArr?.reduce((acc, cur) => {
+      if (!cur.selectedOption) return acc
+      const rightAnswerId =
+        cur?.options[cur?.options.findIndex((x) => x.isRight)]._id
+      if (cur?.selectedOption === rightAnswerId) {
+        return acc + cur.points
+      } else if (cur?.selectedOption !== rightAnswerId) {
+        return acc - (cur.points / 100) * 25
+      }
+      return acc
+    }, 0)
+    return score
+  }
   //   const path = useLocation().pathname
   //   useEffect(() => {
   //     if (timeCounter > 0 && path === "/quiz") {
@@ -17,9 +32,11 @@ export const QuizPage = () => {
   //       }, 1000)
   //     }
   //     if (timeCounter === 0) {
+  // setScore(calculateScore(state?.currentCategory?.questions))
   //       navigate("/final")
   //     }
   //   }, [timeCounter])
+
   const length = state?.currentCategory?.questions?.length
   if (length === 0) {
     return <div>Loading....</div>
@@ -57,6 +74,11 @@ export const QuizPage = () => {
                 className="bg-yellow-400 px-5 py-2 rounded font-bold text-black"
                 onClick={() => {
                   // setIndex((prev) => (prev < length - 1 ? prev + 1 : prev))
+                  setScore(
+                    (prev) =>
+                      (prev = calculateScore(state?.currentCategory?.questions))
+                  )
+
                   index === length - 1
                     ? navigate("/final")
                     : setIndex(index + 1)

@@ -6,6 +6,7 @@ import React from "react"
 import { API } from "API"
 import { ServerErrorMessage } from "types/types"
 import { useNavigate } from "react-router-dom"
+import { useAuthContext } from "context/AuthProvider"
 export type UserSubmitForm = {
   username: string
   email: string
@@ -16,6 +17,7 @@ export type UserSubmitForm = {
 export const SignUp = () => {
   const [isError, setError] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState("")
+  const { setToken, setUserId } = useAuthContext()
   const navigate = useNavigate()
   const validationSchema = Yup.object().shape({
     username: Yup.string()
@@ -65,8 +67,8 @@ export const SignUp = () => {
           localStorage.setItem("token", JSON.stringify(token))
           localStorage.setItem("userId", JSON.stringify(userId))
           localStorage.setItem("username", JSON.stringify(name))
-          // setToken(token);
-          // setUserId(userId);
+          setToken(token)
+          setUserId(userId)
           navigate("/")
         }
       }

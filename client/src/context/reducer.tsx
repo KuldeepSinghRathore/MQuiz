@@ -3,6 +3,7 @@ import { ACTIONTYPE, InitialState } from "types/types"
 export const initialState: InitialState = {
   currentCategory: {} as InitialState["currentCategory"],
   quizData: [] as InitialState["quizData"],
+  scoreData: [] as InitialState["scoreData"],
 }
 
 export const reducer = (
@@ -17,6 +18,14 @@ export const reducer = (
         ...state,
 
         quizData: action.payload,
+      }
+    case "LOAD_SCORE":
+      console.log(action.payload)
+
+      return {
+        ...state,
+
+        scoreData: action.payload,
       }
 
     case "SET_CURRENT_CATEGORY":
@@ -38,6 +47,36 @@ export const reducer = (
               : question
           }),
         },
+      }
+    case "UPDATE_SCORE":
+      const isExist = state.scoreData.find(
+        (score) =>
+          score.userId === action.payload.userId &&
+          score.quizId._id === action.payload.quizId._id
+      )
+        ? true
+        : false
+      console.log(isExist, "isExist")
+
+      console.log(action.payload, "update score")
+
+      return {
+        ...state,
+        scoreData: isExist
+          ? state.scoreData.map((scoreObj) => {
+              return scoreObj.userId === action.payload.userId &&
+                scoreObj.quizId._id === action.payload.quizId._id
+                ? (scoreObj = { ...scoreObj, score: action.payload.score })
+                : scoreObj
+            })
+          : [...state.scoreData, action.payload],
+      }
+
+    case "LOGOUT":
+      return {
+        ...state,
+        currentCategory: {} as InitialState["currentCategory"],
+        scoreData: [] as InitialState["scoreData"],
       }
     default:
       return state
