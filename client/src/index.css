@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+
+overflow: hidden;
+overflow-y: scroll;
+background-color: black;
+}
