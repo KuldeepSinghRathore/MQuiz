@@ -37,6 +37,7 @@ export const QuizPage = () => {
       )
       navigate("/final")
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeCounter])
 
   const length = state?.currentCategory?.questions?.length
@@ -48,11 +49,7 @@ export const QuizPage = () => {
       <div>
         {
           <div className="flex flex-col justify-evenly h-screen">
-            <span className="text-white font-extrabold">
-              0{(timeCounter / 60).toFixed(2)}
-            </span>
-            {/* {(timeCounter % 3600) / 60}
-            {timeCounter % 60} */}
+            <span className="text-white font-extrabold">{timeCounter}</span>
             <QuizCard
               key={index}
               questionObj={state?.currentCategory?.questions[index]}

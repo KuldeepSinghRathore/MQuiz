@@ -1,7 +1,7 @@
 import { useStateContext } from "context/StateProvider"
 import axios, { AxiosError } from "axios"
 import React from "react"
-import { Questions, ServerErrorMessage } from "types/types"
+import { ServerErrorMessage } from "types/types"
 import { useNavigate } from "react-router-dom"
 import { useAuthContext } from "context/AuthProvider"
 import { API } from "API"
