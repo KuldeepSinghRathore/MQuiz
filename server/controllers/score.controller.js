@@ -7,7 +7,6 @@ const saveScore = catchAsyncHandler(async (req, res, next) => {
   const { quizId, name, score } = req.body
 
   const userWithScore = await Score.findOne({ userId, quizId })
-  console.log(userWithScore, "userWithScore")
   if (!userWithScore) {
     const newScore = new Score({
       userId,
