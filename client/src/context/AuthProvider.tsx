@@ -1,7 +1,7 @@
 import type { ReactNode } from "react"
 import React, { createContext, useContext, useState } from "react"
 import { ACTIONTYPE } from "types/types"
-
+import axios from "axios"
 export type TokenType = {
   token: string
 }
@@ -27,7 +27,20 @@ type AuthProviderProps = {
 type DispatchType = (value: ACTIONTYPE) => void
 
 export const AuthContext = createContext({} as AuthContextType)
+export function setupAuthExceptionHandler(logoutUser: any) {
+  const UNAUTHORIZED = 401
 
+  axios.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error?.response?.status === UNAUTHORIZED) {
+        logoutUser()
+        window.location.href = "/login"
+      }
+      return Promise.reject(error)
+    }
+  )
+}
 export function AuthProvider({ children }: AuthProviderProps) {
   let savedUsername = JSON.parse(localStorage.getItem("username")!)
   let savedToken = JSON.parse(localStorage.getItem("token")!)
@@ -46,7 +59,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     localStorage.removeItem("username")
     localStorage.removeItem("userId")
   }
-
+  setupAuthExceptionHandler(logOut)
   return (
     <AuthContext.Provider
       value={{

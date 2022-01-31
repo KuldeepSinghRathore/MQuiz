@@ -25,7 +25,7 @@ function App() {
     <>
       <Header />
       {state.quizData.length === 0 ? (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center h-screen select-none">
           <img src={loader} alt="loader" />
         </div>
       ) : (
