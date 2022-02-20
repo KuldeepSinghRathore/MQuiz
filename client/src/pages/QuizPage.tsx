@@ -16,17 +16,18 @@ export const QuizPage = () => {
         cur?.options[cur?.options.findIndex((x) => x.isRight)]._id
       if (cur?.selectedOption === rightAnswerId) {
         return acc + cur.points
-      } else if (cur?.selectedOption !== rightAnswerId) {
+      }
+      if (cur?.selectedOption !== rightAnswerId) {
         return acc - (cur.points / 100) * 25
       }
       return acc
     }, 0)
     return score
   }
-  let path = useLocation().pathname
+  const path = useLocation().pathname
   useEffect(() => {
     if (timeCounter > 0 && path === "/quiz") {
-      let timer = setTimeout(() => {
+      const timer = setTimeout(() => {
         setTimeCounter(timeCounter - 1)
       }, 1000)
       return () => clearTimeout(timer)
@@ -45,52 +46,65 @@ export const QuizPage = () => {
     return <div>Loading....</div>
   }
   return (
-    <>
-      <div>
-        {
-          <div className="flex flex-col justify-evenly h-screen">
-            <span className="text-white font-extrabold">{timeCounter}</span>
-            <QuizCard
-              key={index}
-              questionObj={state?.currentCategory?.questions[index]}
-              currentQuestion={index}
-              length={length}
-              topic={state?.currentCategory?.topic}
-            />
-            <div className="flex justify-evenly">
-              {index !== 0 && (
-                <button
-                  className="bg-yellow-400 px-5 py-2 rounded font-bold text-black"
-                  onClick={() =>
-                    setIndex((prev: number) => (prev !== 0 ? prev - 1 : prev))
-                  }
-                >
-                  Previous
-                </button>
-              )}
-              <button className="bg-yellow-400 px-5 py-2 rounded font-bold text-black">
-                Timer
-              </button>
+    <div>
+      {
+        <div className="flex flex-col justify-evenly h-screen">
+          <QuizCard
+            key={index}
+            questionObj={state?.currentCategory?.questions[index]}
+            currentQuestion={index}
+            length={length}
+            topic={state?.currentCategory?.topic}
+          />
+          <div className="flex justify-evenly">
+            {index !== 0 && (
               <button
                 className="bg-yellow-400 px-5 py-2 rounded font-bold text-black"
-                onClick={() => {
-                  // setIndex((prev) => (prev < length - 1 ? prev + 1 : prev))
-                  setScore(
-                    (prev) =>
-                      (prev = calculateScore(state?.currentCategory?.questions))
-                  )
-
-                  index === length - 1
-                    ? navigate("/final")
-                    : setIndex(index + 1)
-                }}
+                onClick={() =>
+                  setIndex((prev: number) => (prev !== 0 ? prev - 1 : prev))
+                }
               >
-                {index === length - 1 ? "Submit" : "Next"}
+                Previous
               </button>
+            )}
+            <div className="bg-yellow-400 px-3 py-2 flex rounded font-bold text-black">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              {timeCounter}
             </div>
+            <button
+              className="bg-yellow-400 px-5 py-2 rounded font-bold text-black"
+              onClick={() => {
+                // setIndex((prev) => (prev < length - 1 ? prev + 1 : prev))
+                setScore(
+                  (prev) =>
+                    (prev = calculateScore(state?.currentCategory?.questions))
+                )
+
+                if (index === length - 1) {
+                  navigate("/final")
+                } else {
+                  setIndex(index + 1)
+                }
+              }}
+            >
+              {index === length - 1 ? "Submit" : "Next"}
+            </button>
           </div>
-        }
-      </div>
-    </>
+        </div>
+      }
+    </div>
   )
 }

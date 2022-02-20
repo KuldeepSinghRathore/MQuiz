@@ -1,18 +1,26 @@
 import { useStateContext } from "context/StateProvider"
 import axios, { AxiosError } from "axios"
-import React from "react"
+import React, { useState } from "react"
 import { ServerErrorMessage } from "types/types"
 import { useNavigate } from "react-router-dom"
 import { useAuthContext } from "context/AuthProvider"
 import { API } from "API"
+type SaveScore = {
+  savingStatus: string
+}
 export const ReviewPage = () => {
+  const [saving, setSaving] = useState<SaveScore>({
+    savingStatus: "save score",
+  } as SaveScore)
   const { state, score, dispatch } = useStateContext()
   const { userName, token, userId } = useAuthContext()
+
   const navigate = useNavigate()
 
   const saveScoreToServer = async (url: string, token: any) => {
     try {
       if (token) {
+        setSaving({ ...saving, savingStatus: "saving..." })
         const { status } = await axios.post(
           url,
           {
@@ -27,6 +35,7 @@ export const ReviewPage = () => {
           }
         )
         if (status === 200) {
+          setSaving({ ...saving, savingStatus: "saved" })
           dispatch({
             type: "UPDATE_SCORE",
             payload: {
@@ -70,35 +79,33 @@ export const ReviewPage = () => {
             onClick={() => {
               saveScoreToServer(`${API}/score/save`, token)
             }}
-            className="bg-yellow-300 text-black font-bold px-4 rounded py-2"
+            className="bg-yellow-300 text-black font-bold px-4 rounded py-2 capitalize"
           >
-            Save Score
+            {saving.savingStatus}
           </button>
         </div>
       </div>
-      {state.currentCategory?.questions.map((question) => {
-        return (
-          <div key={question._id}>
-            <p className="py-5 px-2 mt-3 font-medium text-center bg-yellow-300">
-              {question.question}
-            </p>
-            <div className="flex flex-col  justify-evenly items-center  md:flex-row  mt-10 ">
-              {question.options.map((option) => (
-                <button
-                  className={`py-3 font-semibold px-5 mb-3 mr-1 rounded-full bg-yellow-50 w-full md:w-max  ${
-                    (option.isRight && "bg-green-400 text-green-900") ||
-                    (option._id === question.selectedOption &&
-                      "bg-red-700 text-red-100")
-                  }`}
-                  key={option._id}
-                >
-                  {option.text}
-                </button>
-              ))}
-            </div>
+      {state.currentCategory?.questions.map((question) => (
+        <div key={question._id}>
+          <p className="py-5 px-2 mt-3 font-medium text-center bg-yellow-300">
+            {question.question}
+          </p>
+          <div className="flex flex-col  justify-evenly items-center  md:flex-row  mt-10 ">
+            {question.options.map((option) => (
+              <button
+                className={`py-3 font-semibold px-5 mb-3 mr-1 rounded-full bg-yellow-50 w-full md:w-max  ${
+                  (option.isRight && "bg-green-400 text-green-900") ||
+                  (option._id === question.selectedOption &&
+                    "bg-red-700 text-red-100")
+                }`}
+                key={option._id}
+              >
+                {option.text}
+              </button>
+            ))}
           </div>
-        )
-      })}
+        </div>
+      ))}
       <button
         onClick={() => navigate("/")}
         className="bg-yellow-300 px-5 py-2 rounded font-extrabold mt-4 flex justify-center mx-auto"

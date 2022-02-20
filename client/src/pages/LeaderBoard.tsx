@@ -22,21 +22,19 @@ export const LeaderBoard = () => {
         </p>
         <p className="text-white  font-semibold  border-2 w-full">UserScore</p>
       </div>
-      {scoreData.map((score, index) => {
-        return (
-          <div key={index} className="flex justify-between w-full text-center">
-            <p className="text-yellow-300  font-semibold border-2 w-full">
-              {score.quizId.topic}
-            </p>
-            <p className="text-yellow-300  font-semibold text-center border-2 w-full">
-              {score.name}
-            </p>
-            <p className="text-yellow-300  font-semibold  border-2 w-full">
-              {score.score}
-            </p>
-          </div>
-        )
-      })}
+      {scoreData.map((score, index) => (
+        <div key={index} className="flex justify-between w-full text-center">
+          <p className="text-yellow-300  font-semibold border-2 w-full">
+            {score.quizId.topic}
+          </p>
+          <p className="text-yellow-300  font-semibold text-center border-2 w-full">
+            {score.name}
+          </p>
+          <p className="text-yellow-300  font-semibold  border-2 w-full">
+            {score.score}
+          </p>
+        </div>
+      ))}
     </div>
   )
 }

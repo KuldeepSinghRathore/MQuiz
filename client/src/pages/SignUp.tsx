@@ -73,7 +73,7 @@ export const SignUp = () => {
         const serverError = error as AxiosError<ServerErrorMessage>
         if (serverError && serverError.response) {
           console.log({ serverError })
-          let errorMessage = serverError.response.data.message
+          const errorMessage = serverError.response.data.message
           setErrorMessage(errorMessage)
         }
       }

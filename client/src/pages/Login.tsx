@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import axios, { AxiosError } from "axios"
 import { useNavigate } from "react-router-dom"
 import { API } from "API"
@@ -19,6 +19,7 @@ export const Login: React.FC = () => {
     email: "kuldeepsingh@gmail.com",
     password: "123456",
   })
+  const [isLoggingIn, setLoggingIn] = useState(false)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name
@@ -31,6 +32,7 @@ export const Login: React.FC = () => {
       event.preventDefault()
 
       if (formValue.email.length > 0 && formValue.password.length > 0) {
+        setLoggingIn(true)
         const {
           data: { name, token, userId },
           status,
@@ -43,6 +45,7 @@ export const Login: React.FC = () => {
           localStorage.setItem("userId", JSON.stringify(userId))
           localStorage.setItem("token", JSON.stringify(token))
           localStorage.setItem("username", JSON.stringify(name))
+          setLoggingIn(false)
           navigate("/")
         }
       } else {
@@ -55,7 +58,7 @@ export const Login: React.FC = () => {
         const serverError = error as AxiosError<ServerError>
         if (serverError && serverError.response) {
           console.log({ serverError })
-          let errorMessage = serverError.response.data.message
+          const errorMessage = serverError.response.data.message
           setErrorMessage(errorMessage)
         }
       }
@@ -112,22 +115,15 @@ export const Login: React.FC = () => {
             type="submit"
             className="bg-black  hover:text-yellow-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
-            Login
+            {isLoggingIn ? "Logging In..." : "Login"}
           </button>
           <button
             type="button"
-            // onClick={() => reset()}
             className="bg-black  hover:text-yellow-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
             Reset
           </button>
         </div>
-        {/* <button
-          onClick={handleSubmit}
-          className="bg-black flex justify-center w-full text-yellow-400 hover:text-white font-bold mt-7 py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          Guest Login
-        </button> */}
       </form>
     </div>
   )
