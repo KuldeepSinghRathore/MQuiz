@@ -27,41 +27,46 @@ export const Login: React.FC = () => {
     setFormValue({ ...formValue, [name]: value })
   }
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const loginUser = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setLoggingIn(true)
     try {
-      event.preventDefault()
+      const { data, status } = await axios.post(`${API}/login`, formValue)
 
-      if (formValue.email.length > 0 && formValue.password.length > 0) {
-        setLoggingIn(true)
-        const {
-          data: { name, token, userId },
-          status,
-        } = await axios.post(`${API}/login`, formValue)
-
-        if (status === 200) {
-          setUserName(name)
-          setToken(token)
-          setUserId(userId)
-          localStorage.setItem("userId", JSON.stringify(userId))
-          localStorage.setItem("token", JSON.stringify(token))
-          localStorage.setItem("username", JSON.stringify(name))
-          setLoggingIn(false)
-          navigate("/")
-        }
-      } else {
-        setError(true)
-        setErrorMessage("Please enter email and password")
+      if (status === 200) {
+        setToken(data.token)
+        setUserName(data.name)
+        setUserId(data.userId)
+        localStorage.setItem("userId", JSON.stringify(data.userId))
+        localStorage.setItem("token", JSON.stringify(data.token))
+        localStorage.setItem("username", JSON.stringify(data.name))
+        setLoggingIn(false)
+        navigate("/")
       }
     } catch (error) {
+      console.log({ error })
+
       if (axios.isAxiosError(error)) {
+        setLoggingIn(false)
         setError(true)
         const serverError = error as AxiosError<ServerError>
-        if (serverError && serverError.response) {
+        if (serverError && serverError?.response) {
           console.log({ serverError })
-          const errorMessage = serverError.response.data.message
+          const errorMessage = serverError?.response?.data?.message
           setErrorMessage(errorMessage)
         }
       }
+    }
+  }
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (formValue.email === "" || formValue.password === "") {
+      setError(true)
+      setErrorMessage("Please enter email and password")
+    } else {
+      // setIsSubmit(true)
+      loginUser(event)
     }
   }
 

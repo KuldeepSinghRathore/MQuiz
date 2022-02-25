@@ -27,6 +27,10 @@ module.exports = (err, req, res, next) => {
       error = new ErrorHandler(message, 400)
     }
     //  Handle JWT Error
+    if (err.name === "TokenExpiredError") {
+      const message = "UnAuthorized"
+      error = new ErrorHandler(message, 401)
+    }
     if (err.name === "JsonWebTokenError") {
       const message = "UnAuthorized"
       error = new ErrorHandler(message, 401)

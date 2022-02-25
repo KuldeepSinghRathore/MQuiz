@@ -33,8 +33,12 @@ export function setupAuthExceptionHandler(logoutUser: any) {
   axios.interceptors.response.use(
     (response) => response,
     (error) => {
-      if (error?.response?.status === UNAUTHORIZED) {
+      if (
+        error?.response?.status === UNAUTHORIZED &&
+        error?.response?.data.message === "UnAuthorized"
+      ) {
         logoutUser()
+
         window.location.href = "/login"
       }
       return Promise.reject(error)
@@ -54,12 +58,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setToken(null)
     setUserName(null)
     setUserId(null)
-    dispatch({ type: "LOGOUT" })
     localStorage.removeItem("token")
     localStorage.removeItem("username")
     localStorage.removeItem("userId")
   }
-  setupAuthExceptionHandler(logOut)
+  // setupAuthExceptionHandler(logOut)
   return (
     <AuthContext.Provider
       value={{

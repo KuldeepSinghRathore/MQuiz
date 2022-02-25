@@ -17,7 +17,7 @@ export type UserSubmitForm = {
 export const SignUp = () => {
   const [isError, setError] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState("")
-  const { setToken, setUserId } = useAuthContext()
+  const { setToken, setUserName, setUserId } = useAuthContext()
   const navigate = useNavigate()
   const validationSchema = Yup.object().shape({
     username: Yup.string()
@@ -64,6 +64,7 @@ export const SignUp = () => {
           localStorage.setItem("username", JSON.stringify(name))
           setToken(token)
           setUserId(userId)
+          setUserName(name)
           navigate("/")
         }
       }

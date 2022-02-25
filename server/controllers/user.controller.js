@@ -31,7 +31,7 @@ const signupUser = catchAsyncHandler(async (req, res, next) => {
         { userId: saveNewUser._id },
         process.env.JWT_SECRET,
         {
-          expiresIn: "7d",
+          expiresIn: "90d",
         }
       )
       res.json({
@@ -70,7 +70,7 @@ const loginUser = catchAsyncHandler(async (req, res, next) => {
   }
   // creating token
   const token = jwt.sign({ userId: userFromDb._id }, process.env.JWT_SECRET, {
-    expiresIn: "7d",
+    expiresIn: "90d",
   })
   return res.status(200).json({
     success: true,
