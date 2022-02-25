@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as Yup from "yup"
 import axios, { AxiosError } from "axios"
-import React from "react"
+import React, { useState } from "react"
 import { API } from "API"
 import { ServerErrorMessage } from "types/types"
 import { useNavigate } from "react-router-dom"
@@ -18,6 +18,7 @@ export const SignUp = () => {
   const [isError, setError] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState("")
   const { setToken, setUserName, setUserId } = useAuthContext()
+  const [isRegistering, setIsRegistering] = useState(false)
   const navigate = useNavigate()
   const validationSchema = Yup.object().shape({
     username: Yup.string()
@@ -46,6 +47,7 @@ export const SignUp = () => {
   const onSubmit = async (data: UserSubmitForm) => {
     try {
       if (Object.keys(errors).length === 0 && errors.constructor === Object) {
+        setIsRegistering(true)
         const { username, email, password } = data
         const {
           data: { token, userId, name },
@@ -59,6 +61,7 @@ export const SignUp = () => {
         // const userComingFrom = state?.from ? state.from : "/";
 
         if (status === 200) {
+          setIsRegistering(false)
           localStorage.setItem("token", JSON.stringify(token))
           localStorage.setItem("userId", JSON.stringify(userId))
           localStorage.setItem("username", JSON.stringify(name))
@@ -70,6 +73,7 @@ export const SignUp = () => {
       }
     } catch (error) {
       setError(true)
+      setIsRegistering(false)
       if (axios.isAxiosError(error)) {
         const serverError = error as AxiosError<ServerErrorMessage>
         if (serverError && serverError.response) {
@@ -159,7 +163,7 @@ export const SignUp = () => {
             type="submit"
             className="bg-black  hover:text-yellow-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
-            Register
+            {isRegistering ? "Registering..." : "Register"}
           </button>
           <button
             type="button"
