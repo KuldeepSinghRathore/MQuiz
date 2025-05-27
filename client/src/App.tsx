@@ -25,7 +25,15 @@ function App() {
     <>
       <Header />
       {state.quizData.length === 0 ? (
-        <div className="flex justify-center items-center h-screen select-none">
+        <div className="flex flex-col justify-center items-center min-h-screen select-none text-white">
+          <div className=" h-full">
+            <h1 className="font-bold text-xl">
+              Please wait for a minute or Retry after 2 min.
+            </h1>
+            <p className="text-center text-lg font-bold">
+              Server Hosted On Free tier so it takes time
+            </p>
+          </div>
           <img src={loader} alt="loader" />
         </div>
       ) : (
